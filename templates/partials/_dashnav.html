@@ -1,0 +1,46 @@
+{% load static%}
+<nav class="navbar navbar-expand-lg ">
+    <div class="container">
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <ul class="navbar-nav">
+          <li 
+          {% if '/accounts/dashboard/' == request.path %}
+            class = "nav-item mr-3 selunder"
+          {% else%}
+            class="nav-item mr-3"
+          {% endif%}>
+            <a class="nav-link btn btn-outline-primary" href="{% url 'dashboard' %}">listings</a>
+          </li>
+          <li 
+          {% if 'myinquiries' in request.path %}
+            class = "nav-item selunder mr-3 selunder"
+          {% else%}
+            class="nav-item mr-3"
+          {% endif%}
+          >
+            <a class="nav-link btn btn-outline-primary" href="{%url 'myinquiries' %}">My Inquiries</a>
+          </li>
+          <li 
+          {% if 'inquiry' in request.path %}
+            class = "nav-item selunder mr-3 selunder"
+          {% else%}
+            class="nav-item mr-3"
+          {% endif%}
+          >
+            <a class="nav-link btn btn-outline-primary" href="{% url 'inquiry1'%}">Inquiries</a>
+          </li>
+          <li 
+          {% if 'create' in request.path %}
+            class = "nav-item selunder mr-3"
+          {% else%}
+            class="nav-item mr-3"
+          {% endif%}
+          >
+            <a class="nav-link btn btn-outline-primary" href="{% url 'create'%}">Create Listing</a>
+          </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+      </ul>
+      </div>
+    </div>
+  </nav>

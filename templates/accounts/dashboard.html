@@ -1,0 +1,77 @@
+
+{% extends 'base.html' %}
+{% block title%} DashBoard {% endblock%}
+{% block content %}
+{% load crispy_forms_tags %}
+<section id="showcase-inner" class="py-5 text-white">
+    <div class="container">
+      <div class="row text-center">
+        <div class="col-md-12">
+          <h1 class="display-4"> {{request.user.first_name}}'s Dashboard</h1>
+          <p class="lead">Manage your BS Listings/Inquiries</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Breadcrumb -->
+  <section id="bc" class="mt-3">
+    <div class="container">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="{% url 'index'%}">
+              <i class="fas fa-home"></i> Home</a>
+          </li>
+          <li class="breadcrumb-item active"> Dashboard</li>
+        </ol>
+      </nav>
+    </div>
+  </section>
+
+  <section id="dashboard" class="py-4">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h2>Welcome {{request.user.first_name}} {{request.user.last_name}}</h2>
+          {% include 'partials/_dashnav.html'%}
+          <p>Here are your Inquiries</p>
+          <hr>
+          {% if listings %}
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Cateogry</th>
+                <th scope="col">Title</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for listing in listings %}
+              <tr>
+                <td>{{listing.category}}</td>
+                <td>{{listing.title}}</td>
+                <td>
+                  <a class="btn btn-light" href="{% url 'listing' listing.id%}">View Listing</a>
+                  <a class="btn btn-outline-warning" href="{% url 'update' listing.id%}">Update</a>
+                  <a class="btn btn-outline-danger" onclick="$('#delete').click()">Delete</a>
+                  <form style="display: none;" method="POST" action="{% url 'delete' listing.id%}">
+                    {% csrf_token%}
+                    <button type="submit" class="btn btn-outline-danger" id="delete">Delete</button>
+                  </form>
+
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          {%else%}
+          <p>You have not created any listings </p>
+          <button class='btn btn-primary'>Create a New Lisitng</button>
+          {%endif%}
+        </div>
+      </div>
+    </div>
+  </section>
+
+{%endblock%}

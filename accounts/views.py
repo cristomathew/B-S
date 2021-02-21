@@ -51,7 +51,7 @@ def register(request):
                     else:
                         send_mail(
                             'Account Creation Confirmation',
-                            'Hi '+ first_name + 'You Confirmation code is: ' +code,
+                            'Hi '+ first_name + ' You Confirmation code is: ' +code,
                             'cristomathew7@gmail.com',
                             [email],
                             fail_silently=False
@@ -83,7 +83,7 @@ def confirmregister(request):
             'password': password,
         }
         if code == confirmcode:
-            user = user.objects.create_user(username=username, password=password, email=email, phone=phone, first_name=first_name, last_name=last_name)
+            user = user.objects.create_user(username=username, email=email, password=password,  phone=phone, first_name=first_name, last_name=last_name)
             user.save()
             login(request, user)
             messages.success(request, 'You are now logged in')

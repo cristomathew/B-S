@@ -71,10 +71,17 @@ def update(request, pk):
     listing = get_object_or_404(Listing, pk=pk, owner=request.user)
     context = {
         'form': UpdateForm(instance=listing),
-        'update': True
+        'update': True,
+        'pk': pk
     }
     if request.method=="POST":
-        pass
+        form = UpdateForm(request.POST,request.FILES,instance=listing)
+        print(form)
+        print(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard')
+
     else:
         return render(request, 'listings/create.html', context)
 

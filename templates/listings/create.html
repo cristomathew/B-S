@@ -10,7 +10,11 @@
         Create
         {%endif%}
     </h1>
-    <form action ="{% url 'create'%}"method="POST" enctype="multipart/form-data">
+    {% if update%}
+        <form action ="{% url 'update' pk%}"method="POST" enctype="multipart/form-data">
+    {% else%}
+        <form action ="{% url 'create'%}"method="POST" enctype="multipart/form-data">
+    {%endif%}
         {%csrf_token%}
         {{ form|crispy }}
         {% if update%}

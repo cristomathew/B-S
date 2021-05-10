@@ -54,7 +54,7 @@ def search(request):
 
 @login_required
 def create(request):
-    if request.method =='POST':
+    if request.method == 'POST':
         form = ListingForm(request.POST, request.FILES)
         if form.is_valid():
             new = form.save(commit=False)
@@ -64,7 +64,8 @@ def create(request):
         else:
             pass
     else:
-        return render(request, 'listings/create.html', {'form':ListingForm()})
+        return render(request,'listings/create.html',{'form': ListingForm()})
+
 
 @login_required
 def update(request, pk):

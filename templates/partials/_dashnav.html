@@ -29,14 +29,23 @@
           >
             <a class="nav-link btn btn-outline-primary" href="{% url 'inquiry1'%}">Inquiries</a>
           </li>
-          <li 
+          <li
           {% if 'create' in request.path %}
-            class = "nav-item selunder mr-3"
+            class = "nav-item selunder mr-3 selunder"
           {% else%}
             class="nav-item mr-3"
           {% endif%}
           >
-            <a class="nav-link btn btn-outline-primary" href="{% url 'create'%}">Create Listing</a>
+            <a class="nav-link btn btn-outline-primary" href="{% url 'create'%}">Create</a>
+          </li>
+          <li
+          {% if 'change_password' in request.path %}
+            class = "nav-item selunder mr-3 selunder"
+          {% else%}
+            class="nav-item mr-3"
+          {% endif%}
+          >
+            <a class="nav-link btn btn-outline-primary" href="{% url 'change_password'%}">Change Password</a>
           </li>
         </ul>
         <ul class="navbar-nav ml-auto">

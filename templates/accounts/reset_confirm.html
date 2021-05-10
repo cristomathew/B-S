@@ -1,0 +1,30 @@
+{% extends 'base.html'%}
+{% block title %} Reset Confirm {% endblock%}
+{% block content %}
+{% load crispy_forms_tags %}
+<style>
+    #id_new_password1,#id_new_password2{
+        width: 500px;
+
+    }
+    .reset-password-container{
+        margin-top: 10vh;
+        height: 70vh;
+    }
+</style>
+<div class="container reset-password-container">
+    {%if validlink%}
+    <h1>Set a new Password!</h1>
+    <br>
+    <p>Enter your new password</p>
+    <hr>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <input type="submit" value="Chage Password" class="btn btn-primary">
+    </form>
+    {%else%}
+    <p> The link is invalid , maybe because the link was already used. Please request a new one!</p>
+    {%endif%}
+</div>
+{% endblock %}

@@ -1,28 +1,27 @@
-{% extends 'base.html'%}
-{% block title%} Create{% endblock%}
-{% block content%}
+{% extends 'base.html' %}
+{% block title %} Create {% endblock %}
+{% block content %}
 {% load crispy_forms_tags %}
 <div class="container">
     <h1>
-        {% if update%}
+        {%if update %}
         Update
-        {% else%}
+        {% else %}
         Create
-        {%endif%}
+        {% endif %}
     </h1>
-    {% if update%}
-        <form action ="{% url 'update' pk%}"method="POST" enctype="multipart/form-data">
-    {% else%}
-        <form action ="{% url 'create'%}"method="POST" enctype="multipart/form-data">
-    {%endif%}
-        {%csrf_token%}
+    {% if update %}
+        <form action="{% url 'update' pk%}" method="POST" enctype="multipart/form-data">
+    {% else %}
+        <form action="{% url 'create' %}" method="POST" enctype="multipart/form-data">
+    {% endif %}
+        {% csrf_token %}
         {{ form|crispy }}
-        {% if update%}
-        <button class="btn btn-primary" type="submit">Update</button>
-        {% else%}
-        <button class="btn btn-primary" type="submit">Create</button>
-        {%endif%}
-  
+        {%if update %}
+        <button class="btn btn-primary" type="submit">Update</button> 
+        {% else %}
+        <button class="btn btn-primary" type="submit">Create</button> 
+        {% endif %}
     </form>
 </div>
-{% endblock%}
+{% endblock %}

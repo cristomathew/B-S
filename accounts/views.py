@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from Core.models import User
 from listings.models import Listing
 from django.contrib.auth.decorators import login_required
@@ -125,7 +125,18 @@ def dashboard(request):
         'listings': mylistings
     }
     return render(request, 'accounts/dashboard.html', context)
-
+@login_required
+def favourite_listing(request):
+    favourites = request.user.favourites
+    favourites = favourites.split(',')[1:]
+    print(favourites)
+    listings = []
+    for i in favourites:
+        listings.append(get_object_or_404(Listing,pk=int(i)))
+    context = {
+        'listings': listings
+    }
+    return render(request, 'accounts/favourites.html', context)
 @login_required
 def myinquiries(request):
     myinquiry = inquiry.objects.all().filter(user_id=request.user.id)

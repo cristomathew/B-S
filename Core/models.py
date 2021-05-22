@@ -29,6 +29,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=255, unique=True)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
+    favourites = models.CharField(max_length=200,default='')
+    rate_listing = models.CharField(max_length=200,default='')
     phone = models.BigIntegerField(default=0, unique=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)

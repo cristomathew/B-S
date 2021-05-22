@@ -84,7 +84,7 @@ WSGI_APPLICATION = 'BS.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'youtube',
+        'NAME': 'youtubetrail',
         'USER': 'postgres',
         'PASSWORD': 'katti403',
         'HOST': 'localhost'

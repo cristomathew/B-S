@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Listing
 from django.core.paginator import Paginator, EmptyPage
@@ -15,9 +16,56 @@ def listings(request):
     return render(request, 'listings/listings.html', context)
 
 def listing(request, pk):
+    rate=False
+    favourite = False
     listing = get_object_or_404(Listing, pk=pk)
+
+    if request.user.is_authenticated:
+        favourites = str(request.user.favourites)
+        rate_listing = str(request.user.rate_listing)
+        favourites = favourites.split(',')
+        rate_listing = rate_listing.split(',')
+        if request.method== "POST":
+            if 'favourite_val' in request.POST:
+                favourite_val = request.POST['favourite_val']
+                if favourite_val == 'unfavourite':
+                    if str(pk) in favourites:
+                        favourites.remove(str(pk))
+                if favourite_val == 'favourite':
+                    if str(pk) not in favourites:
+                        favourites.append(str(pk))
+                request.user.favourites = ','.join(favourites)
+                request.user.save()
+
+            if 'my_rating' in request.POST:
+                my_rating = request.POST['my_rating']
+                if int(my_rating)>10 or int(my_rating)<0:
+                    messages.error(request,'Please enter a value from 0-10')
+                elif str(pk) not in rate_listing:
+                    if listing.total_rating:
+                        listing.total_rating += int(request.POST['my_rating'])
+                        listing.no_of_rating +=1
+                    else:
+                        listing.total_rating = int(request.POST['my_rating'])
+                        listing.no_of_rating = 1
+                    rate_listing.append(str(pk))
+                    request.user.rate_listing = ','.join(rate_listing)
+                    request.user.save()
+                    listing.save()
+        
+        if str(pk) in favourites:
+            favourite=True
+        if str(pk) not in rate_listing:
+            rate = True
+    current_rating = 0
+    if listing.no_of_rating:
+        current_rating = listing.total_rating/listing.no_of_rating
     context = {
-        'listing': listing
+        'listing': listing,
+        'favourite':favourite,
+        'rate': rate,
+        'current_rating': current_rating
+
     }
     return render(request, 'listings/listing.html', context)
 

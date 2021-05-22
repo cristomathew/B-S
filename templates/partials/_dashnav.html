@@ -12,6 +12,15 @@
             <a class="nav-link btn btn-outline-primary" href="{% url 'dashboard' %}">listings</a>
           </li>
           <li 
+          {% if '/favourites/' == request.path %}
+            class = "nav-item mr-3 selunder"
+          {% else%}
+            class="nav-item mr-3"
+          {% endif%}>
+            <a class="nav-link btn btn-outline-primary" href="{% url 'favourites' %}">Favourites</a>
+          </li>
+          
+          <li 
           {% if 'myinquiries' in request.path %}
             class = "nav-item selunder mr-3 selunder"
           {% else%}

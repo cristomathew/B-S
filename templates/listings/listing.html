@@ -16,6 +16,8 @@
 
   <!-- Breadcrumb -->
   <section id="bc" class="mt-3">
+ {% include 'partials/_alerts.html'%}
+
     <div class="container">
       <nav>
         <ol class="breadcrumb">
@@ -23,18 +25,17 @@
             <a href="{% url 'index' %}">Home</a>
           </li>
           <li class="breadcrumb-item">
-            <a href="{% url 'listings'}">Listings</a>
+            <a href="{% url 'listings' %}">Listings</a>
           </li>
           <li class="breadcrumb-item active">{{listing.title}}</li>
         </ol>
       </nav>
     </div>
   </section>
- {% include 'partials/_alerts.html'%}
   <!-- Listing -->
   <section id="listing" class="py-4">
     <div class="container">
-      <a href="{%url 'listings'%}" class="btn btn-light mb-4">Back To Listings</a>
+      <a href="{%url 'listings' %}" class="btn btn-light mb-4">Back To Listings</a>
       <div class="row">
         <div class="col-md-9">
           <!-- Home Main Image -->
@@ -96,6 +97,14 @@
                   <i class="fas fa-list-alt"></i> Category:
                   <span class="float-right">{{ listing.category}}</span>
                 </li>
+                <li class="list-group-item text-secondary">
+                  <i class="fas fa-list-alt"></i> Rating:
+                  {%if current_rating%}
+                    <span class="float-right">{{ current_rating }}</span>
+                  {%else%}
+                    <p>No rating made for this listing yet</p>
+                  {%endif%}
+                </li>
               </ul>
             </div>
             <div class="col-md-6">
@@ -129,6 +138,35 @@
         </div>
         <div class="col-md-3">
           <button class="btn-primary btn-block btn-lg" data-toggle="modal" data-target="#inquiryModal">Make An Inquiry</button>
+          <br>
+          {%if request.user.is_authenticated%}
+            <form action="{%url 'listing' listing.id%}" method="POST">
+              {%csrf_token%}
+              {%if favourite%}
+                <input type="hidden" name="favourite_val" value="unfavourite">
+                <button class="btn-danger btn-block btn-lg" type="submit">UnFavourite</button>
+              {%else%}
+                <input type="hidden" name="favourite_val" value="favourite">
+                <button class="btn-success btn-block btn-lg" type="submit">Favourite</button>
+              {%endif%}
+            </form>
+          {%endif%}
+          <br>
+          {%if rate%}
+            <form action="{%url 'listing' listing.id%}" method="POST">
+              {%csrf_token%}
+              <div style="display: flex;">
+                <input  name="my_rating" required placeholder="Enter value from 1-10" class="form-control">
+                <button class="btn btn-primary" type="submit">Rate</button>
+              </div>
+                {%else%}
+              {%if request.user.is_authenticated%}
+                <p>You have already rated this listing</p>
+              {%else%}
+                <p>Please login to rate this listing</p>
+              {%endif%}
+            </form>
+          {%endif%}
         </div>
       </div>
     </div>
@@ -152,6 +190,7 @@
             {%else%}
             <input type="hidden" name="user_id" value="0">
             {%endif%}
+          
             <input type="hidden" name="owner_mail" value="{{listing.owner.email}}">
             <input type="hidden" name="listing_id" value="{{listing.id}}">
             <input type="hidden" name="owner_id" value="{{listing.owner.id}}">
